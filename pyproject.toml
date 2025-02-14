@@ -1,0 +1,113 @@
+[project]
+name = "ena-ons"
+version = "0.0.0"
+description = "Pacote para transformação de vazão em ENA de acordo com as regras de negócio do ONS."
+authors = [
+    {name = "viictor-m", email = "magalhaes.a.victor@gmail.com"},
+]
+dependencies = [
+    "pandas>=2.2.3",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ipykernel>=6.29.5",
+]
+code-quality = [
+    "isort>=6.0.0",
+    "black>=25.1.0",
+    "pydocstyle>=6.3.0",
+    "autoflake>=2.3.1",
+    "flake8-pyproject>=1.2.3",
+    "mypy>=1.15.0",
+]
+test = [
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4",
+]
+
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+show_error_codes = true
+warn_return_any = true
+
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+atomic = true
+include_trailing_comma = true
+lines_after_imports = 2
+lines_between_types = 1
+use_parentheses = true
+filter_files = true
+
+[tool.flake8]
+max-line-length = 88
+max-complexity = 10
+exclude = [
+    ".venv",
+    ".git",
+    "__pycache__",
+    "*.egg-info",
+    ".pytest_cache",
+    ".mypy_cache",
+]
+ignore = [
+    "E203",
+    "E225", 
+    "W503",
+    "W504",
+]
+
+[tool.pydocstyle]
+convention = "numpy"
+add-ignore = "D401"
+match = '(?!test_|tests).*\.py'
+match-dir = "[^\tests|.].*"
+
+
+[tool.pdm.scripts]
+flake8 = {cmd = ["flake8", "src"]}
+
+autoflake = { cmd = [
+    "autoflake",
+    "--remove-all-unused-imports",
+    "--recursive",
+    "--remove-unused-variables",
+    "--in-place",
+    "src",
+    "tests",
+    "--exclude=__init__.py",
+] }
+
+
+black = { cmd = ["black", "src", "tests"] }
+isort = { cmd = ["isort", "src", "tests"] }
+mypy = { cmd = ["mypy", "src", "tests"] }
+pydocstyle = { cmd = ["pydocstyle", "src"] }
+
+formatar = { composite = ["autoflake", "black", "isort"] }
+testar = { cmd = ["pytest", "--cov=src"] }
+
+verificar = { composite = [
+    "formatar",
+    "flake8",
+    "mypy",
+    "pydocstyle",
+    "testar",
+] }
