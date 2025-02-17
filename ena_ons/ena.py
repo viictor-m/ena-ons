@@ -53,25 +53,23 @@ class VazaoENA:
         pd.DataFrame
             Vazões Artificiais do Alto Tietê.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
-
-        traicao = regras.Traicao(df_pivot).calcular()
-        pedreira = regras.Pedreira(df_pivot).calcular()
-        billings_pedras = regras.BillingsPedras(df_pivot).calcular()
-        pedras = regras.Pedras(df_pivot).calcular()
-        edgard_souza = regras.EdgardSouza(df_pivot).calcular()
-        henry_borden = regras.HenryBorden(df_pivot).calcular()
-        billings_artificial = regras.BillingsArtificial(df_pivot).calcular()
-        bbonita = regras.BarraBonitaArtificial(df_pivot).calcular()
-        bariri_art = regras.BaririArtificial(df_pivot).calcular()
-        ibitinga_art = regras.IbitingaArtificial(df_pivot).calcular()
-        promissao_art = regras.PromissaoArtificial(df_pivot).calcular()
-        navanhandava_art = regras.NovaAvanhandavaArtificial(df_pivot).calcular()
-        tres_irmaos_art = regras.TresIrmaosArtificial(df_pivot).calcular()
-        ilha_solteira = regras.IlhaSolteiraEquivalente(df_pivot).calcular()
-        jupia_art = regras.JupiaArtificial(df_pivot).calcular()
-        pprimavera_art = regras.PortoPrimaveraArtificial(df_pivot).calcular()
-        itaipu_art = regras.ItaipuArtificial(df_pivot).calcular()
+        traicao = regras.Traicao(df).calcular()
+        pedreira = regras.Pedreira(df).calcular()
+        billings_pedras = regras.BillingsPedras(df).calcular()
+        pedras = regras.Pedras(df).calcular()
+        edgard_souza = regras.EdgardSouza(df).calcular()
+        henry_borden = regras.HenryBorden(df).calcular()
+        billings_artificial = regras.BillingsArtificial(df).calcular()
+        bbonita = regras.BarraBonitaArtificial(df).calcular()
+        bariri_art = regras.BaririArtificial(df).calcular()
+        ibitinga_art = regras.IbitingaArtificial(df).calcular()
+        promissao_art = regras.PromissaoArtificial(df).calcular()
+        navanhandava_art = regras.NovaAvanhandavaArtificial(df).calcular()
+        tres_irmaos_art = regras.TresIrmaosArtificial(df).calcular()
+        ilha_solteira = regras.IlhaSolteiraEquivalente(df).calcular()
+        jupia_art = regras.JupiaArtificial(df).calcular()
+        pprimavera_art = regras.PortoPrimaveraArtificial(df).calcular()
+        itaipu_art = regras.ItaipuArtificial(df).calcular()
 
         df_alto_tiete = pd.concat(
             [
@@ -92,10 +90,11 @@ class VazaoENA:
                 jupia_art,
                 pprimavera_art,
                 itaipu_art,
-            ]
+            ],
+            axis=1,
         )
 
-        return df_alto_tiete.reset_index()
+        return df_alto_tiete
 
     @staticmethod
     def calcular_artificiais_paraiba_sul(df: pd.DataFrame) -> pd.DataFrame:
@@ -115,21 +114,19 @@ class VazaoENA:
         pd.DataFrame
             Vazões Artificiais do Paraíba do Sul.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
-
-        bombeamento_sta_cecilia = regras.BombeamentoSantaCecilia(df_pivot).calcular()
-        vertimento_tocos = regras.VertimentoTocos(df_pivot).calcular()
-        santana_natural = regras.SantanaNatural(df_pivot).calcular()
-        santana_art = regras.SantanaArtificial(df_pivot).calcular()
-        vigario_art = regras.VigarioArtificial(df_pivot).calcular()
-        vertimento_santana = regras.VertimentoSantana(df_pivot).calcular()
-        anta_art = regras.AntaArtificial(df_pivot).calcular()
-        simplicio_art = regras.SimplicioArtificial(df_pivot).calcular()
-        ilha_pombos_art = regras.IlhaPombosArtificial(df_pivot).calcular()
-        nilo_pecanha_art = regras.NiloPecanhaArtificial(df_pivot).calcular()
-        lajes_art = regras.LajesArtificial(df_pivot).calcular()
-        fontes_art = regras.FontesArtificial(df_pivot).calcular()
-        pereira_passos_art = regras.PereiraPassosArtificial(df_pivot).calcular()
+        bombeamento_sta_cecilia = regras.BombeamentoSantaCecilia(df).calcular()
+        vertimento_tocos = regras.VertimentoTocos(df).calcular()
+        santana_natural = regras.SantanaNatural(df).calcular()
+        santana_art = regras.SantanaArtificial(df).calcular()
+        vigario_art = regras.VigarioArtificial(df).calcular()
+        vertimento_santana = regras.VertimentoSantana(df).calcular()
+        anta_art = regras.AntaArtificial(df).calcular()
+        simplicio_art = regras.SimplicioArtificial(df).calcular()
+        ilha_pombos_art = regras.IlhaPombosArtificial(df).calcular()
+        nilo_pecanha_art = regras.NiloPecanhaArtificial(df).calcular()
+        lajes_art = regras.LajesArtificial(df).calcular()
+        fontes_art = regras.FontesArtificial(df).calcular()
+        pereira_passos_art = regras.PereiraPassosArtificial(df).calcular()
 
         df_paraiba_sul = pd.concat(
             [
@@ -146,10 +143,11 @@ class VazaoENA:
                 lajes_art,
                 fontes_art,
                 pereira_passos_art,
-            ]
+            ],
+            axis=1,
         )
 
-        return df_paraiba_sul.reset_index()
+        return df_paraiba_sul
 
     @staticmethod
     def calcular_naturais_sao_francisco(df: pd.DataFrame) -> pd.DataFrame:
@@ -169,14 +167,12 @@ class VazaoENA:
         pd.DataFrame
             Vazões Naturais do São Francisco.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
+        pafonso = regras.PauloAfonsoNatural(df).calcular()
+        complexo = regras.ComplexoNatural(df).calcular()
 
-        pafonso = regras.PauloAfonsoNatural(df_pivot).calcular()
-        complexo = regras.ComplexoNatural(df_pivot).calcular()
+        df_sf = pd.concat([pafonso, complexo], axis=1)
 
-        df_sf = pd.concat([pafonso, complexo])
-
-        return df_sf.reset_index()
+        return df_sf
 
     @staticmethod
     def calcular_artificiais_iguacu(df: pd.DataFrame) -> pd.DataFrame:
@@ -196,14 +192,12 @@ class VazaoENA:
         pd.DataFrame
             Vazões Artificiais do Iguaçu.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
+        jordao = regras.JordaoArtificial(df).calcular()
+        segredo = regras.SegredoArtificial(df).calcular()
 
-        jordao = regras.JordaoArtificial(df_pivot).calcular()
-        segredo = regras.SegredoArtificial(df_pivot).calcular()
+        df_iguacu = pd.concat([jordao, segredo], axis=1)
 
-        df_iguacu = pd.concat([jordao, segredo])
-
-        return df_iguacu.reset_index()
+        return df_iguacu
 
     @staticmethod
     def calcular_naturais_grande(df: pd.DataFrame) -> pd.DataFrame:
@@ -223,9 +217,7 @@ class VazaoENA:
         pd.DataFrame
             Vazões Naturais do Grande.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
-
-        return regras.ItutingaNatural(df_pivot).calcular().reset_index()
+        return regras.ItutingaNatural(df).calcular()
 
     @staticmethod
     def calcular_naturais_paraguai(df: pd.DataFrame) -> pd.DataFrame:
@@ -245,9 +237,7 @@ class VazaoENA:
         pd.DataFrame
             Vazões Naturais do Paraguai.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
-
-        return regras.ItiquiraII(df_pivot).calcular().reset_index()
+        return regras.ItiquiraII(df).calcular()
 
     @staticmethod
     def calcular_artificiais_xingu(
@@ -271,14 +261,12 @@ class VazaoENA:
         pd.DataFrame
             Vazões Artificiais do Xingu.
         """
-        df_pivot = df.pivot(index="data", columns="codigo", values="valor")
+        belomonte = regras.BeloMonteArtificial(df, hidrograma).calcular()
+        pimental_art = regras.PimentalArtificial(df, hidrograma).calcular()
 
-        belomonte = regras.BeloMonteArtificial(df_pivot, hidrograma).calcular()
-        pimental_art = regras.PimentalArtificial(df_pivot, hidrograma).calcular()
+        df_xingu = pd.concat([belomonte, pimental_art], axis=1)
 
-        df_xingu = pd.concat([belomonte, pimental_art])
-
-        return df_xingu.reset_index()
+        return df_xingu
 
     def adicionar_vazoes_artificiais(self) -> pd.DataFrame:
         """
@@ -308,7 +296,8 @@ class VazaoENA:
                 df_grande,
                 df_paraguai,
                 df_xingu,
-            ]
+            ],
+            axis=1,
         )
 
     def calcular_ena(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -325,10 +314,16 @@ class VazaoENA:
         pd.DataFrame
             Dataframe com valores de ENA.
         """
-        df_prod = df.merge(self.produtibilidade, on="codigo", how="left")
-        df_prod["ena"] = df_prod["valor"] * df_prod["produtibilidade"]
+        df_melt = df.melt(
+            value_name="valor", var_name="codigo", ignore_index=False
+        ).reset_index()
+        df_prod = df_melt.merge(self.produtibilidade, on="codigo", how="left")
+        df_prod = df_prod.assign(ena=df_prod.valor * df_prod.produtibilidade)
 
-        return df_prod[["data", "codigo", "ena"]].rename({"ena": "valor"}, axis=1)
+        df_ena = df_prod[["data", "codigo", "ena"]].pivot(
+            index="data", columns="codigo", values="ena"
+        )
+        return df_ena
 
     def agrupar(self, df: pd.DataFrame, agrupamento: str) -> pd.DataFrame:
         """
@@ -351,9 +346,15 @@ class VazaoENA:
                 "Agrupamento não existe no dataframe passado na construção da classe!"
             )
 
-        df_relacao = df.merge(self.agrupamentos, on="codigo", how="left")
+        df_melt = df.melt(
+            value_name="valor", var_name="codigo", ignore_index=False
+        ).reset_index()
+        df_relacao = df_melt.merge(self.agrupamentos, on="codigo", how="left")
 
         df_agrupado = df_relacao[["data", agrupamento, "valor"]]
         df_agrupado = df_agrupado.groupby(["data", agrupamento]).sum().reset_index()
+        df_pivotado = df_agrupado.pivot(
+            index="data", columns=agrupamento, values="valor"
+        )
 
-        return df_agrupado
+        return df_pivotado
