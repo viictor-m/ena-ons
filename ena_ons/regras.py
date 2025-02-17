@@ -20,20 +20,19 @@ class Traicao:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Traição.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.guarapiranga + self.billings
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.traicao
+        vazao.name = codigos.traicao
 
-        return df
+        return vazao
 
 
 class Pedreira:
@@ -50,20 +49,19 @@ class Pedreira:
         """
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Pedreira.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.billings
-        df = pd.DataFrame(vazao).rename({118: "valor"}, axis=1)
-        df["codigo"] = codigos.pedreira
+        vazao.name = codigos.pedreira
 
-        return df
+        return vazao
 
 
 class BillingsPedras:
@@ -80,20 +78,19 @@ class BillingsPedras:
         """
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Billings + Pedras.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (self.billings - 0.185) / 0.8103
-        df = pd.DataFrame(vazao).rename({118: "valor"}, axis=1)
-        df["codigo"] = codigos.billings_pedras
+        vazao.name = codigos.billings_pedras
 
-        return df
+        return vazao
 
 
 class Pedras:
@@ -109,23 +106,21 @@ class Pedras:
             Dataframe com série diária de valores de vazão.
         """
         self.billings = df[codigos.billings]
-        billings_pedras = BillingsPedras(df).calcular()
-        self.billings_pedras = billings_pedras["valor"]
+        self.billings_pedras = BillingsPedras(df).calcular()
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Pedras.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.billings_pedras - self.billings
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.pedras
+        vazao.name = codigos.pedras
 
-        return df
+        return vazao
 
 
 class EdgardSouza:
@@ -144,20 +139,19 @@ class EdgardSouza:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Edgar de Souza s/ contribuição.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.esouza - self.guarapiranga - self.billings
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.edgard_souza_sem_tributarios
+        vazao.name = codigos.edgard_souza_sem_tributarios
 
-        return df
+        return vazao
 
 
 class HenryBorden:
@@ -172,19 +166,18 @@ class HenryBorden:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        pedras = Pedras(df).calcular()
-        self.pedras = pedras["valor"]
+        self.pedras = Pedras(df).calcular()
         self.esouza = df[codigos.edgard_souza_com_tributarios]
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Henry Borden Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -193,11 +186,9 @@ class HenryBorden:
             + self.guarapiranga
             + self.billings
         )
+        vazao.name = codigos.henry_borden
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.henry_borden
-
-        return df
+        return vazao
 
 
 class BillingsArtificial:
@@ -216,13 +207,13 @@ class BillingsArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Billings Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -230,11 +221,9 @@ class BillingsArtificial:
             + self.guarapiranga
             + self.billings
         )
+        vazao.name = codigos.billings_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.billings_artificial
-
-        return df
+        return vazao
 
 
 class BarraBonitaArtificial:
@@ -254,13 +243,13 @@ class BarraBonitaArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Barra Bonita Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -269,11 +258,9 @@ class BarraBonitaArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.barra_bonita_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.barra_bonita_artificial
-
-        return df
+        return vazao
 
 
 class BaririArtificial:
@@ -293,13 +280,13 @@ class BaririArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Bariri Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -308,11 +295,9 @@ class BaririArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.bariri_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.bariri_artificial
-
-        return df
+        return vazao
 
 
 class IbitingaArtificial:
@@ -332,13 +317,13 @@ class IbitingaArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Ibitinga Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -347,11 +332,9 @@ class IbitingaArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.ibitinga_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.ibitinga_artificial
-
-        return df
+        return vazao
 
 
 class PromissaoArtificial:
@@ -371,13 +354,13 @@ class PromissaoArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Promissão Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -386,11 +369,9 @@ class PromissaoArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.promissao_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.promissao_artificial
-
-        return df
+        return vazao
 
 
 class NovaAvanhandavaArtificial:
@@ -410,13 +391,13 @@ class NovaAvanhandavaArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Nova Avanhandava Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -425,11 +406,9 @@ class NovaAvanhandavaArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.nova_avanhandava_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.nova_avanhandava_artificial
-
-        return df
+        return vazao
 
 
 class TresIrmaosArtificial:
@@ -449,13 +428,13 @@ class TresIrmaosArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Três Irmãos Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -464,11 +443,9 @@ class TresIrmaosArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.tres_irmaos_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.tres_irmaos_artificial
-
-        return df
+        return vazao
 
 
 class IlhaSolteiraEquivalente:
@@ -489,13 +466,13 @@ class IlhaSolteiraEquivalente:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Ilha Solteira Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -504,11 +481,9 @@ class IlhaSolteiraEquivalente:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.ilha_solteira_equiv
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.ilha_solteira_equiv
-
-        return df
+        return vazao
 
 
 class JupiaArtificial:
@@ -528,13 +503,13 @@ class JupiaArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Jupiá Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -543,11 +518,9 @@ class JupiaArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.jupia_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.jupia_artificial
-
-        return df
+        return vazao
 
 
 class PortoPrimaveraArtificial:
@@ -567,13 +540,13 @@ class PortoPrimaveraArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Porto Primavera Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -582,11 +555,9 @@ class PortoPrimaveraArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.porto_primavera_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.porto_primavera_artificial
-
-        return df
+        return vazao
 
 
 class ItaipuArtificial:
@@ -606,13 +577,13 @@ class ItaipuArtificial:
         self.guarapiranga = df[codigos.guarapiranga]
         self.billings = df[codigos.billings]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Itaipu Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -621,11 +592,9 @@ class ItaipuArtificial:
             - self.guarapiranga
             - self.billings
         )
+        vazao.name = codigos.itaipu_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.itaipu_artificial
-
-        return df
+        return vazao
 
 
 class BombeamentoSantaCecilia:
@@ -687,21 +656,19 @@ class BombeamentoSantaCecilia:
 
         return nova_vazao
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo do Bombeamento de Santa Cecília.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(self.santa_cecilia.apply(self.bombear)).rename(
-            {125: "valor"}, axis=1
-        )
-        df["codigo"] = codigos.bombeamento_santa_cecilia
+        vazao = self.santa_cecilia.apply(self.bombear)
+        vazao.name = codigos.bombeamento_santa_cecilia
 
-        return df
+        return vazao
 
 
 class VertimentoTocos:
@@ -734,19 +701,19 @@ class VertimentoTocos:
         """
         return max(0, vazao - 25)
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de vertimento de Tocos.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(self.tocos.apply(self.verter)).rename({201: "valor"}, axis=1)
-        df["codigo"] = codigos.vertimento_tocos
+        vazao = self.tocos.apply(self.verter)
+        vazao.name = codigos.vertimento_tocos
 
-        return df
+        return vazao
 
 
 class SantanaNatural:
@@ -769,20 +736,19 @@ class SantanaNatural:
         self.lajes = df[codigos.lajes]
         self.fator = 0.997
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo da vazão natural de Santana.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (self.tocos + self.lajes) * self.fator
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.santana
+        vazao.name = codigos.santana
 
-        return df
+        return vazao
 
 
 class SantanaArtificial:
@@ -797,21 +763,18 @@ class SantanaArtificial:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        santana = SantanaNatural(df).calcular()
-        self.santana = santana["valor"]
+        self.santana = SantanaNatural(df).calcular()
         self.tocos = df[codigos.tocos]
-        vertimento_tocos = VertimentoTocos(df).calcular()
-        bombeamento_santa_cecilia = BombeamentoSantaCecilia(df).calcular()
-        self.vertimento_tocos = vertimento_tocos["valor"]
-        self.bombeamento_santa_cecilia = bombeamento_santa_cecilia["valor"]
+        self.vertimento_tocos = VertimentoTocos(df).calcular()
+        self.bombeamento_santa_cecilia = BombeamentoSantaCecilia(df).calcular()
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Santana Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -819,11 +782,9 @@ class SantanaArtificial:
             + self.vertimento_tocos
             + self.bombeamento_santa_cecilia
         )
+        vazao.name = codigos.santana_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.santana_artificial
-
-        return df
+        return vazao
 
 
 class VigarioArtificial:
@@ -838,8 +799,7 @@ class VigarioArtificial:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        santana_artificial = SantanaArtificial(df).calcular()
-        self.santana_artificial = santana_artificial["valor"]
+        self.santana_artificial = SantanaArtificial(df).calcular()
         self.limite = 190
 
     def escolher(self, vazao: float) -> float:
@@ -858,21 +818,19 @@ class VigarioArtificial:
         """
         return min(vazao, self.limite)
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Vigário Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(
-            self.santana_artificial.apply(self.escolher), columns=["valor"]
-        )
-        df["codigo"] = codigos.vigario
+        vazao = self.santana_artificial.apply(self.escolher)
+        vazao.name = codigos.vigario
 
-        return df
+        return vazao
 
 
 class VertimentoSantana:
@@ -887,27 +845,22 @@ class VertimentoSantana:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        santana_artificial = SantanaArtificial(df).calcular()
-        self.santana_artificial = santana_artificial["valor"]
+        self.santana_artificial = SantanaArtificial(df).calcular()
+        self.vigario_artificial = VigarioArtificial(df).calcular()
 
-        vigario_artificial = VigarioArtificial(df).calcular()
-        self.vigario_artificial = vigario_artificial["valor"]
-
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo do Vertimento de Santana.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.santana_artificial - self.vigario_artificial
+        vazao.name = codigos.santana_vertimento
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.santana_vertimento
-
-        return df
+        return vazao
 
 
 class AntaArtificial:
@@ -923,23 +876,17 @@ class AntaArtificial:
             Dataframe com série diária de valores de vazão.
         """
         self.anta = df[codigos.anta]
+        self.bombeamento_santa_cecilia = BombeamentoSantaCecilia(df).calcular()
+        self.santana = SantanaNatural(df).calcular()
+        self.vertimento_santana = VertimentoSantana(df).calcular()
 
-        bomb_santa_cecilia = BombeamentoSantaCecilia(df).calcular()
-        self.bombeamento_santa_cecilia = bomb_santa_cecilia["valor"]
-
-        santana = SantanaNatural(df).calcular()
-        self.santana = santana["valor"]
-
-        vertimento_santana = VertimentoSantana(df).calcular()
-        self.vertimento_santana = vertimento_santana["valor"]
-
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Anta Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -948,11 +895,9 @@ class AntaArtificial:
             - self.santana
             + self.vertimento_santana
         )
+        vazao.name = codigos.anta_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.anta_artificial
-
-        return df
+        return vazao
 
 
 class SimplicioArtificial:
@@ -978,8 +923,7 @@ class SimplicioArtificial:
         limite : int
             Limite do intervalo de vazão, by default 430
         """
-        anta = AntaArtificial(df).calcular()
-        self.anta = anta["valor"]
+        self.anta = AntaArtificial(df).calcular()
         self.limite = limite
 
     def escolher(self, vazao: float) -> float:
@@ -1003,19 +947,19 @@ class SimplicioArtificial:
 
         return nova_vazao
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Simplício Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(self.anta.apply(self.escolher), columns=["valor"])
-        df["codigo"] = codigos.simplicio_artificial
+        vazao = self.anta.apply(self.escolher)
+        vazao.name = codigos.simplicio_artificial
 
-        return df
+        return vazao
 
 
 class IlhaPombosArtificial:
@@ -1031,20 +975,17 @@ class IlhaPombosArtificial:
             Dataframe com série diária de valores de vazão.
         """
         self.ilha_pombos = df[codigos.ilha_pombos]
-        bombeamento_santa_cecilia = BombeamentoSantaCecilia(df).calcular()
-        self.bombeamento_santa_cecila = bombeamento_santa_cecilia["valor"]
-        santana = SantanaNatural(df).calcular()
-        self.santana = santana["valor"]
-        vertimento_santana = VertimentoSantana(df).calcular()
-        self.vertimento_santana = vertimento_santana["valor"]
+        self.bombeamento_santa_cecila = BombeamentoSantaCecilia(df).calcular()
+        self.santana = SantanaNatural(df).calcular()
+        self.vertimento_santana = VertimentoSantana(df).calcular()
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Ilha dos Pombos Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = (
@@ -1053,11 +994,9 @@ class IlhaPombosArtificial:
             - self.santana
             + self.vertimento_santana
         )
+        vazao.name = codigos.ilha_pombos_artificial
 
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.ilha_pombos_artificial
-
-        return df
+        return vazao
 
 
 class NiloPecanhaArtificial:
@@ -1072,8 +1011,7 @@ class NiloPecanhaArtificial:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        vigario_artificial = VigarioArtificial(df).calcular()
-        self.vigario_artificial = vigario_artificial["valor"]
+        self.vigario_artificial = VigarioArtificial(df).calcular()
         self.limite = 144
 
     def escolher(self, vazao: float) -> float:
@@ -1092,21 +1030,19 @@ class NiloPecanhaArtificial:
         """
         return min(vazao, self.limite)
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Nilo Peçanha Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(
-            self.vigario_artificial.apply(self.escolher), columns=["valor"]
-        )
-        df["codigo"] = codigos.nilo_pecanha_artificial
+        vazao = self.vigario_artificial.apply(self.escolher)
+        vazao.name = codigos.nilo_pecanha_artificial
 
-        return df
+        return vazao
 
 
 class LajesArtificial:
@@ -1143,13 +1079,13 @@ class LajesArtificial:
         """
         return lajes + min(tocos, self.limite)
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Lajes Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = list()
@@ -1157,10 +1093,10 @@ class LajesArtificial:
             valor = self.escolher(tocos, lajes)
             vazao.append(valor)
 
-        df = pd.DataFrame(vazao, index=self.lajes.index, columns=["valor"])
-        df["codigo"] = codigos.lajes_artificial
+        serie = pd.Series(vazao, index=self.lajes.index)
+        serie.name = codigos.lajes_artificial
 
-        return df
+        return serie
 
 
 class FontesArtificial:
@@ -1175,12 +1111,9 @@ class FontesArtificial:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        lajes = LajesArtificial(df).calcular()
-        self.lajes = lajes["valor"]
-        vigario_artificial = VigarioArtificial(df).calcular()
-        self.vigario_artificial = vigario_artificial["valor"]
-        nilo_pecanha_artificial = NiloPecanhaArtificial(df).calcular()
-        self.nilo_pecanha_artificial = nilo_pecanha_artificial["valor"]
+        self.lajes = LajesArtificial(df).calcular()
+        self.vigario_artificial = VigarioArtificial(df).calcular()
+        self.nilo_pecanha_artificial = NiloPecanhaArtificial(df).calcular()
         self.limite = 17
 
     def escolher(self, lajes: float, vigario: float, nilo_pecanha: float) -> float:
@@ -1208,13 +1141,13 @@ class FontesArtificial:
 
         return nova_vazao
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Fontes Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = list()
@@ -1224,10 +1157,10 @@ class FontesArtificial:
             valor = self.escolher(lajes, vigario_artificial, nilo_pecanha)
             vazao.append(valor)
 
-        df = pd.DataFrame(vazao, index=self.lajes.index, columns=["valor"])
-        df["codigo"] = codigos.fontes_artificial
+        serie = pd.Series(vazao, index=self.lajes.index)
+        serie.name = codigos.fontes_artificial
 
-        return df
+        return serie
 
 
 class PereiraPassosArtificial:
@@ -1242,25 +1175,22 @@ class PereiraPassosArtificial:
         df : pd.DataFrame
             Dataframe com série diária de valores de vazão.
         """
-        fontes = FontesArtificial(df).calcular()
-        self.fontes = fontes["valor"]
-        nilo_pecanha_artificial = NiloPecanhaArtificial(df).calcular()
-        self.nilo_pecanha_artificial = nilo_pecanha_artificial["valor"]
+        self.fontes = FontesArtificial(df).calcular()
+        self.nilo_pecanha_artificial = NiloPecanhaArtificial(df).calcular()
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Pereira Passos Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.fontes + self.nilo_pecanha_artificial
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.pereira_passos_artificial
+        vazao.name = codigos.pereira_passos_artificial
 
-        return df
+        return vazao
 
 
 class ItutingaNatural:
@@ -1277,20 +1207,19 @@ class ItutingaNatural:
         """
         self.camargos = df[codigos.camargos]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Itutinga Natural.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        vazao = self.camargos
-        df = pd.DataFrame(vazao).rename({1: "valor"}, axis=1)
-        df["codigo"] = codigos.itutinga
+        vazao = self.camargos.copy()
+        vazao.name = codigos.itutinga
 
-        return df
+        return vazao
 
 
 class PauloAfonsoNatural:
@@ -1307,20 +1236,19 @@ class PauloAfonsoNatural:
         """
         self.moxoto = df[codigos.moxoto]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Paulo Afonso.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        vazao = self.moxoto
-        df = pd.DataFrame(vazao).rename({173: "valor"}, axis=1)
-        df["codigo"] = codigos.paulo_afonso
+        vazao = self.moxoto.copy()
+        vazao.name = codigos.paulo_afonso
 
-        return df
+        return vazao
 
 
 class ComplexoNatural:
@@ -1337,20 +1265,19 @@ class ComplexoNatural:
         """
         self.moxoto = df[codigos.moxoto]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Complexo.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        vazao = self.moxoto
-        df = pd.DataFrame(vazao).rename({173: "valor"}, axis=1)
-        df["codigo"] = codigos.complexo
+        vazao = self.moxoto.copy()
+        vazao.name = codigos.complexo
 
-        return df
+        return vazao
 
 
 class JordaoArtificial:
@@ -1384,19 +1311,19 @@ class JordaoArtificial:
         """
         return vazao - min(self.limite, vazao - 10)
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo da artificial de Jordão.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        df = pd.DataFrame(self.jordao.apply(self.desviar)).rename({73: "valor"}, axis=1)
-        df["codigo"] = codigos.jordao_artificial
+        vazao = self.jordao.apply(self.desviar)
+        vazao.name = codigos.jordao_artificial
 
-        return df
+        return vazao
 
 
 class SegredoArtificial:
@@ -1434,23 +1361,23 @@ class SegredoArtificial:
         desvio: float = segredo + min(jordao - 10, self.limite)
         return desvio
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Segredo Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         segredo_art = list()
         for jordao, segredo in zip(self.jordao, self.segredo):
             segredo_art.append(self.desviar(jordao, segredo))
 
-        df = pd.DataFrame(segredo_art, index=self.segredo.index, columns=["valor"])
-        df["codigo"] = codigos.segredo_artificial
+        vazao = pd.Series(segredo_art, index=self.segredo.index)
+        vazao.name = codigos.segredo_artificial
 
-        return df
+        return vazao
 
 
 class ItiquiraII:
@@ -1467,20 +1394,19 @@ class ItiquiraII:
         """
         self.itiquira1 = df[codigos.itiquira1]
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Itiquira II.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
-        vazao = self.itiquira1
-        df = pd.DataFrame(vazao).rename({259: "valor"}, axis=1)
-        df["codigo"] = codigos.itiquira2
+        vazao = self.itiquira1.copy()
+        vazao.name = codigos.itiquira2
 
-        return df
+        return vazao
 
 
 class BeloMonteArtificial:
@@ -1503,7 +1429,7 @@ class BeloMonteArtificial:
         self.desvio_maximo = 13900
         self.hidrograma = hidrograma
 
-    def preparar(self) -> pd.DataFrame:
+    def preparar(self) -> pd.Series:
         """
         Prepara os dados para o cálculo do desvio.
 
@@ -1512,10 +1438,10 @@ class BeloMonteArtificial:
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Dataframe contendo vazão de pimental e valores do hidrograma.
         """
-        df = self.pimental
+        df = self.pimental.copy()
         idx = df.index
 
         df["mes"] = df.index.month  # type: ignore
@@ -1550,13 +1476,13 @@ class BeloMonteArtificial:
 
         return vazao_desviada
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo da artificial de Belo Monte.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         df = self.preparar()
@@ -1564,10 +1490,10 @@ class BeloMonteArtificial:
         for row in df.itertuples():
             belomonte.append(self.desviar(row.pimental, row.hidrograma))  # type: ignore
 
-        df["valor"] = belomonte
-        df["codigo"] = codigos.belo_monte_artificial
+        vazao = pd.Series(belomonte, index=self.pimental.index)
+        vazao.name = codigos.belo_monte_artificial
 
-        return df[["valor", "codigo"]]
+        return vazao
 
 
 class PimentalArtificial:
@@ -1585,20 +1511,18 @@ class PimentalArtificial:
             Vazões do hidrograma (médio) de Belo Monte por mês.
         """
         self.pimental = df[codigos.pimental]
-        belo_monte = BeloMonteArtificial(df, hidrograma).calcular()
-        self.belo_monte = belo_monte["valor"]
+        self.belo_monte = BeloMonteArtificial(df, hidrograma).calcular()
 
-    def calcular(self) -> pd.DataFrame:
+    def calcular(self) -> pd.Series:
         """
         Aplica regra de cálculo de Pimental Artificial.
 
         Returns
         -------
-        pd.DataFrame
+        pd.Series
             Valores de vazão com regra de cálculo.
         """
         vazao = self.pimental - self.belo_monte
-        df = pd.DataFrame(vazao, columns=["valor"])
-        df["codigo"] = codigos.pimental_artificial
+        vazao.name = codigos.pimental_artificial
 
-        return df
+        return vazao
