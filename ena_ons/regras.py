@@ -1429,7 +1429,7 @@ class BeloMonteArtificial:
         self.desvio_maximo = 13900
         self.hidrograma = hidrograma
 
-    def preparar(self) -> pd.Series:
+    def preparar(self) -> pd.DataFrame:
         """
         Prepara os dados para o cálculo do desvio.
 
@@ -1438,7 +1438,7 @@ class BeloMonteArtificial:
 
         Returns
         -------
-        pd.Series
+        pd.DataFrame
             Dataframe contendo vazão de pimental e valores do hidrograma.
         """
         df = self.pimental.copy()
