@@ -2,6 +2,8 @@
 
 import pandas as pd
 
+from pandas.errors import ParserError
+
 from ena_ons import regras
 
 
@@ -12,8 +14,6 @@ class VazaoENA:
         self,
         dados: pd.DataFrame,
         produtibilidade: pd.DataFrame,
-        agrupamentos: pd.DataFrame,
-        hidrograma_belo_monte: pd.DataFrame,
     ) -> None:
         """
         Inicialização da classe.
@@ -27,13 +27,146 @@ class VazaoENA:
             valor de produtibilidade.
         agrupamentos : pd.DataFrame
             Agrupamentos desejados para agrupar valores de ENA.
+        """
+        self.dados = self.__validar_dados__(dados)
+        self.produtibilidade = self.__validar_produtibilidade__(produtibilidade)
+
+    def __validar_dados__(self, dados: pd.DataFrame) -> pd.DataFrame:
+        """
+        Valida dataframe "dados" passado na inicialização da classe.
+
+        Parameters
+        ----------
+        dados : pd.DataFrame
+            Dataframe com postos como colunas, datas como index e valores sendo vazão.
+
+        Returns
+        -------
+        pd.DataFrame
+            Dados validados.
+
+        Raises
+        ------
+        ValueError
+            Caso dado passado na construção da classe não possa ser validado por algum
+            motivo.
+        """
+        if dados.columns.dtype not in [int, float]:
+            try:
+                dados.columns = dados.columns.astype(float)
+            except ValueError:
+                raise ValueError(
+                    "Colunas do dataframe de dados devem ser códigos dos postos, "
+                    "no tipo int ou float!"
+                )
+
+        if not pd.api.types.is_datetime64_dtype(dados.index):
+            try:
+                dados.index = pd.to_datetime(dados.index)
+            except (ValueError, ParserError):
+                raise ValueError(
+                    "Index do dataframe deve ser do tipo datetime64 ou parseável!"
+                )
+
+        return dados
+
+    def __validar_produtibilidade__(
+        self, produtibilidade: pd.DataFrame
+    ) -> pd.DataFrame:
+        """
+        Valida dataframe "produtibilidade" passado na inicialização da classe.
+
+        Parameters
+        ----------
+        produtibilidade : pd.DataFrame
+            Dataframe com colunas "codigo", "produtibilidade" para todos os postos com
+            valor de produtibilidade.
+
+        Returns
+        -------
+        pd.DataFrame
+            Dataframe validado.
+
+        Raises
+        ------
+        ValueError
+            Caso dado passado na construção da classe não possa ser validado por algum
+            motivo.
+        """
+        colunas_necessarias = ["codigo", "produtibilidade"]
+        for coluna in colunas_necessarias:
+            if coluna not in produtibilidade.columns:
+                raise ValueError(
+                    f"Dataframe de produtibilidade deve conter coluna '{coluna}'!"
+                )
+
+        produtibilidade["codigo"] = produtibilidade.codigo.astype(float)
+        produtibilidade["produtibilidade"] = produtibilidade.produtibilidade.astype(
+            float
+        )
+        return produtibilidade
+
+    def __validar_hidrograma__(self, hidrograma: pd.DataFrame) -> pd.DataFrame:
+        """
+        Valida dataframe "hidrograma_belo_monte_" passado na inicialização da classe.
+
+        Parameters
+        ----------
         hidrograma : pd.DataFrame
             Vazões do hidrograma (médio) de Belo Monte por mês.
+
+        Returns
+        -------
+        pd.DataFrame
+            Hidrograma validado.
+
+        Raises
+        ------
+        ValueError
+            Caso dataframe não possa ser validado.
         """
-        self.dados = dados
-        self.produtibilidade = produtibilidade
-        self.agrupamentos = agrupamentos
-        self.hidrograma = hidrograma_belo_monte
+        colunas_necessarias = ["mes", "vazao"]
+        for coluna in colunas_necessarias:
+            if coluna not in hidrograma.columns:
+                raise ValueError(
+                    f"Dataframe do hidrograma deve conter coluna '{coluna}'!"
+                )
+        hidrograma["mes"] = hidrograma.mes.astype(int)
+        hidrograma["vazao"] = hidrograma.vazao.astype(float)
+        return hidrograma
+
+    def __validar_agrupamento__(self, agrupamento: pd.DataFrame) -> pd.DataFrame:
+        """
+        Valida dataframe de agrupamento.
+
+        Dataframe deve conter apenas coluna "codigo" + 01 coluna de agrupamento especí
+        fico para cálculo de soma agrupada.
+
+        Parameters
+        ----------
+        agrupamento : pd.DataFrame
+            Dataframe passado na função.
+
+        Returns
+        -------
+        pd.DataFrame
+            Agrupamento validado.
+
+        Raises
+        ------
+        ValueError
+            Caso dataframe não possa ser validado.
+        """
+        if len(agrupamento.columns) != 2:
+            raise ValueError(
+                f"Há {len(agrupamento.columns)} presentes no dataframe."
+                "Devem existir duas colunas!"
+            )
+
+        if "codigo" not in agrupamento.columns:
+            raise ValueError("Dataframe de agrupamento deve conter coluna 'codigo'!")
+
+        return agrupamento
 
     @staticmethod
     def calcular_artificiais_alto_tiete(df: pd.DataFrame) -> pd.DataFrame:
@@ -217,7 +350,9 @@ class VazaoENA:
         pd.DataFrame
             Vazões Naturais do Grande.
         """
-        return regras.ItutingaNatural(df).calcular()
+        regra = regras.ItutingaNatural(df).calcular()
+        df = regra.to_frame()
+        return df
 
     @staticmethod
     def calcular_naturais_paraguai(df: pd.DataFrame) -> pd.DataFrame:
@@ -237,7 +372,9 @@ class VazaoENA:
         pd.DataFrame
             Vazões Naturais do Paraguai.
         """
-        return regras.ItiquiraII(df).calcular()
+        regra = regras.ItiquiraII(df).calcular()
+        df = regra.to_frame()
+        return df
 
     @staticmethod
     def calcular_artificiais_xingu(
@@ -268,15 +405,24 @@ class VazaoENA:
 
         return df_xingu
 
-    def adicionar_vazoes_artificiais(self) -> pd.DataFrame:
+    def adicionar_vazoes_artificiais(self, hidrograma: pd.DataFrame) -> pd.DataFrame:
         """
         Adiciona vazões artificiais aos dados de vazão da entrada.
+
+        Parameters
+        ----------
+        hidrograma : pd.DataFrame
+            Hidrograma (médio) de Belo Monte. Deve ser um dataframe contendo uma coluna
+            chamada "mes", com os meses do ano e coluna "vazao" contendo os valores de
+            desvio mínimo.
 
         Returns
         -------
         pd.DataFrame
             Dataframe com vazão natural afluente diária por posto.
         """
+        hidrograma = self.__validar_hidrograma__(hidrograma)
+
         df = self.dados.copy()
         df_alto_tiete = self.calcular_artificiais_alto_tiete(df)
         df_paraiba_sul = self.calcular_artificiais_paraiba_sul(df)
@@ -284,7 +430,7 @@ class VazaoENA:
         df_iguacu = self.calcular_artificiais_iguacu(df)
         df_grande = self.calcular_naturais_grande(df)
         df_paraguai = self.calcular_naturais_paraguai(df)
-        df_xingu = self.calcular_artificiais_xingu(df, self.hidrograma)
+        df_xingu = self.calcular_artificiais_xingu(df, hidrograma)
 
         return pd.concat(
             [
@@ -325,36 +471,35 @@ class VazaoENA:
         )
         return df_ena
 
-    def agrupar(self, df: pd.DataFrame, agrupamento: str) -> pd.DataFrame:
+    def agrupar(self, df: pd.DataFrame, agrupamento: pd.DataFrame) -> pd.DataFrame:
         """
-        Agrupa valores de ENA a partir de um dos agrupamentos existentes.
+        Soma valores de ENA a partir do agrupamento passado.
 
         Parameters
         ----------
         df : pd.DataFrame
             Valores calculados de ENA por posto.
-        agrupamento : str
-            Nome do agrupamento aceito [subsistemas, REE ou bacias].
+        agrupamento : pd.DataFrame
+            Dataframe deve conter apenas coluna "codigo" + 01 coluna de agrupamento
+            específico para cálculo de soma agrupada.
 
         Returns
         -------
         pd.DataFrame
             ENA somada por agrupamento.
         """
-        if agrupamento not in self.agrupamentos.columns:
-            raise ValueError(
-                "Agrupamento não existe no dataframe passado na construção da classe!"
-            )
+        agrupamento = self.__validar_agrupamento__(agrupamento)
+        for coluna in agrupamento.columns:
+            if coluna != "codigo":
+                grupo = coluna
 
         df_melt = df.melt(
             value_name="valor", var_name="codigo", ignore_index=False
         ).reset_index()
-        df_relacao = df_melt.merge(self.agrupamentos, on="codigo", how="left")
+        df_relacao = df_melt.merge(agrupamento, on="codigo", how="left")
 
-        df_agrupado = df_relacao[["data", agrupamento, "valor"]]
-        df_agrupado = df_agrupado.groupby(["data", agrupamento]).sum().reset_index()
-        df_pivotado = df_agrupado.pivot(
-            index="data", columns=agrupamento, values="valor"
-        )
+        df_agrupado = df_relacao[["data", grupo, "valor"]]
+        df_agrupado = df_agrupado.groupby(["data", grupo]).sum().reset_index()
+        df_pivotado = df_agrupado.pivot(index="data", columns=grupo, values="valor")
 
         return df_pivotado
