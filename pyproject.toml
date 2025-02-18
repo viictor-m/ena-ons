@@ -1,6 +1,6 @@
 [project]
 name = "ena-ons"
-version = "0.0.0"
+version = "0.1.0"
 description = "Pacote para transformação de vazão em ENA de acordo com as regras de negócio do ONS."
 authors = [
     {name = "viictor-m", email = "magalhaes.a.victor@gmail.com"},
