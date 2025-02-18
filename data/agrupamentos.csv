@@ -1,0 +1,198 @@
+codigo,posto,bacia,subsistema
+7,MASCARENHAS DE MORAES,Grande,seco
+8,ESTREITO,Grande,seco
+9,JAGUARA,Grande,seco
+10,IGARAPAVA,Grande,seco
+11,VOLTA GRANDE,Grande,seco
+12,PORTO COLOMBIA,Grande,seco
+14,CACONDE,Grande,seco
+15,EUC DA CUNHA,Grande,seco
+16,LIMOEIRO,Grande,seco
+17,MARIMBONDO,Grande,seco
+18,AGUA VERMELHA,Grande,seco
+22,BATALHA,Paranaíba,seco
+23,CORUMBA III,Paranaíba,seco
+24,EMBORCACAO,Paranaíba,seco
+25,NOVA PONTE,Paranaíba,seco
+28,CAPIM BRANCO 2,Paranaíba,seco
+31,ITUMBIARA,Paranaíba,seco
+32,CACHOEIRA DOURADA,Paranaíba,seco
+33,SAO SIMAO,Paranaíba,seco
+34,ILHA SOLTEIRA,Alto Paraná,seco
+37,BARRA BONITA,Tietê,seco
+38,BARIRI,Tietê,seco
+39,IBITINGA,Tietê,seco
+42,NOVA AVANHANDAVA,Tietê,seco
+43,TRES IRMAOS,Tietê,seco
+44,ILHA SOLTEIRA EQUIVALENTE,Alto Paraná,seco
+45,JUPIA,Alto Paraná,seco
+46,PORTO PRIMAVERA,Baixo Paraná,seco
+47,JURUMIRIM,Paranapanema,seco
+48,PIRAJU,Paranapanema,seco
+49,CHAVANTES,Paranapanema,seco
+50,LUCAS GARCEZ,Paranapanema,seco
+51,CANOAS 2,Paranapanema,seco
+52,CANOAS 1,Paranapanema,seco
+57,MAUÁ,Paranapanema,s
+61,CAPIVARA,Paranapanema,seco
+62,TAQUARUCU,Paranapanema,seco
+63,ROSANA,Paranapanema,seco
+66,ITAIPU,Baixo Paraná,seco
+2,ITUTINGA,Grande,seco
+6,FURNAS,Grande,seco
+92,ITÁ,Uruguai,s
+74,FOZ DO AREIA,Iguaçu,s
+75,SEGREDO + DESVIO,Iguaçu,s
+76,SEGREDO,Iguaçu,s
+77,SALTO SANTIAGO,Iguaçu,s
+78,SALTO OSORIO,Iguaçu,s
+81,BAIXO IGUAÇU,Iguaçu,s
+88,SÃO ROQUE,Uruguai,s
+89,GARIBALDI,Uruguai,s
+93,PASSO FUNDO,Uruguai,s
+94,FOZ CHAPECÓ,Uruguai,s
+97,MONTE CLARO,Jacuí,s
+98,CASTRO ALVES,Jacuí,s
+99,ESPORA,Paranaíba,seco
+101,SALTO PILAO,Itajaí-Açu,s
+102,SÃO JOSÉ,Uruguai,s
+104,TRAIÇÃO,Alto Tietê,seco
+109,PEDREIRA,Alto Tietê,seco
+110,ERNESTINA,Jacuí,s
+111,PASSO REAL,Jacuí,s
+112,JACUI,Jacuí,s
+113,ITAUBA,Jacuí,s
+114,DONA FRANCISCA,Jacuí,s
+115,CAPIVARI CACHOEIRA,Capivari,s
+116,PEDRAS,Alto Tietê,seco
+117,GUARAPIRANGA,Alto Tietê,seco
+118,BILLINGS,Alto Tietê,seco
+119,BILLINGS + PEDRAS,Alto Tietê,seco
+120,JAGUARI,Paraíba do Sul,seco
+122,SANTA BRANCA,Paraíba do Sul,seco
+123,FUNIL,Paraíba do Sul,seco
+125,SANTA CECILIA,Paraíba do Sul,seco
+126,SIMPLICIO,Paraíba do Sul,seco
+127,ANTA,Paraíba do Sul,seco
+129,ANTA,Paraíba do Sul,seco
+130,ILHA POMBOS,Paraíba do Sul,seco
+131,NILO PECANHA,Paraíba do Sul,seco
+132,LAJES,Paraíba do Sul,seco
+72,FUNDAO,Iguaçu,s
+73,JORDAO,Iguaçu,s
+103,PASSO SÃO JOÃO,Uruguai,s
+148,AIMORES,Doce,seco
+149,CANDONGA,Doce,seco
+155,RETIRO BAIXO,São Francisco,seco
+156,TRES MARIAS,São Francisco,seco
+158,QUEIMADO,São Francisco,seco
+160,PONTE NOVA,Alto Tietê,seco
+161,EDGARD DE SOUZA COM TRIBUTÁRIOS,Alto Tietê,seco
+164,EDGARD DE SOUZA SEM TRIBUTÁRIOS,Alto Tietê,seco
+168,SOBRADINHO INCREMENTAL,São Francisco,ne
+169,SOBRADINHO,São Francisco,ne
+171,ITAPARICA INCREMENTAL,São Francisco,ne
+172,ITAPARICA,São Francisco,ne
+173,MOXOTO,São Francisco,ne
+175,PAULO AFONSO,São Francisco,ne
+176,COMPLEXO PAULO AFONSO-MOXOTÓ,São Francisco,ne
+178,XINGÓ,São Francisco,ne
+183,ANTÔNIO DIAS+SA CARVALHO,Doce,seco
+188,ITAPEBI,Jequitinhonha,ne
+190,BOA ESPERANÇA,Parnaíba,ne
+191,CANA BRAVA,Tocantins,seco
+196,ROSAL,Itabapoana,seco
+197,PICADA,Paraíba do Sul,seco
+198,SOBRAGI,Paraíba do Sul,seco
+201,TOCOS,Paraíba do Sul,seco
+202,LAJES / PEREIRA PASSOS / FONTES,Paraíba do Sul,seco
+203,SANTANA,Paraíba do Sul,seco
+204,CACHOEIRA CALDEIRÃO,Araguari,n
+205,CORUMBÁ 4,Paranaíba,seco
+206,MIRANDA,Paranaíba,seco
+207,CAPIM BRANCO 1,Paranaíba,seco
+209,CORUMBA 1,Paranaíba,seco
+211,FUNIL-GRANDE,Grande,seco
+215,BARRA GRANDE,Uruguai,s
+216,CAMPOS NOVOS,Uruguai,s
+217,MACHADINHO,Uruguai,s
+220,MONJOLINHO,Uruguai,s
+222,SALTO CAXIAS,Iguaçu,s
+226,JURUENA,Amazonas,n
+141,BAGUARI,Doce,seco
+144,MASCARENHAS,Doce,seco
+277,CURUA-UNA,Amazonas,n
+230,SÃO MANOEL,Amazonas,seco
+237,BARRA BONITA,Tietê,seco
+238,BARIRI,Tietê,seco
+239,IBITINGA,Tietê,seco
+240,PROMISSAO,Tietê,seco
+241,SALTO VERDINHO,Paranaíba,seco
+242,NOVA AVANHANDAVA,Tietê,seco
+243,TRES IRMAOS,Tietê,seco
+244,ILHA SOLTEIRA EQUIVALENTE,Alto Paraná,seco
+245,JUPIA,Alto Paraná,seco
+246,PORTO PRIMAVERA,Baixo Paraná,seco
+247,CAÇU,Paranaíba,seco
+248,BARRA DOS COQUEIROS,Paranaíba,seco
+249,OURINHOS,Paranapanema,seco
+251,SERRA FACAO,Paranaíba,seco
+253,SÃO SALVADOR,Tocantins,seco
+254,PEDRA DO CAVALO,Paraguaçu,ne
+255,IRAPE,Jequitinhonha,seco
+257,PEIXE ANGICAL,Tocantins,seco
+259,ITIQUIRA I E II,Paraguai,seco
+261,FOZ DO RIO CLARO,Paranaíba,seco
+262,GUILMAN-AMORIM,Doce,seco
+263,PORTO ESTRELA,Doce,seco
+266,ITAIPU,Baixo Paraná,seco
+269,BALBINA,Amazonas,n
+270,SERRA DA MESA,Tocantins,seco
+271,ESTREITO TOCANTINS,Tocantins,n
+273,LAJEADO,Tocantins,seco
+275,TUCURUI,Tocantins,n
+278,MANSO,Paraguai,seco
+279,SAMUEL,Amazonas,seco
+280,COARACY NUNES,Araguari,n
+281,PONTE DE PEDRA,Paraguai,seco
+283,SANTA CLARA MG,Mucuri,seco
+284,14 DE JULHO,Jacuí,s
+285,JIRAU,Amazonas,seco
+287,SANTO ANTONIO,Amazonas,seco
+288,BELO MONTE,Xingu,n
+228,COLIDER,Amazonas,seco
+229,TELES PIRES,Amazonas,seco
+299,ILHA DOS POMBOS,Paraíba do Sul,seco
+302,PIMENTAL ARTIFICIAL,Xingu,n
+317,TOCOS vertimento,Paraíba do Sul,seco
+318,HENRY BORDEN,Alto Tietê,seco
+319,BILLINGS,Alto Tietê,seco
+154,SAO DOMINGOS,Baixo Paraná,seco
+252,ITIQUIRA II,Paraguai,seco
+1,CAMARGOS,Grande,seco
+40,PROMISSAO,Tietê,seco
+70,JORDÃO,Iguaçu,s
+71,SANTA CLARA PR,Iguaçu,s
+121,PARAIBUNA,Paraíba do Sul,seco
+134,SALTO GRANDE,Doce,seco
+290,SANTO ANTONIO DO JARI,Amazonas,n
+291,DARDANELOS,Amazonas,seco
+292,BELO MONTE PRINCIPAL,Xingu,n
+294,SALTO,Paranaíba,seco
+295,JAURU,Paraguai,seco
+296,GUAPORE,Amazonas,seco
+303,FONTES,Paraíba do Sul,seco
+304,SANTANA vertimento,Paraíba do Sul,seco
+306,PEREIRA PASSOS,Paraíba do Sul,seco
+314,ITAOCARA,Paraíba do Sul,seco
+315,SANTANA,Paraíba do Sul,seco
+316,VIGÁRIO,Paraíba do Sul,seco
+135,BARRA DO BRAUNA,Paraíba do Sul,seco
+145,RONDON II,Amazonas,seco
+227,SINOP,Amazonas,seco
+286,QUEBRA QUEIXO,Uruguai,s
+297,FERREIRA GOMES,Araguari,n
+298,SANTA CECÍLIA BOMBEAMENTO,Paraíba do Sul,seco
+213,SUÍÇA,Santa Maria,seco
+225,SALTO APIACÁS,Amazonas,seco
+53,PARANAPANEMA,Paranapanema,seco
